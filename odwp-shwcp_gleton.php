@@ -47,6 +47,8 @@ defined( 'GLT_SLUG' ) || define( 'GLT_SLUG', 'odwpglt' );
 defined( 'GLT_NAME' ) || define( 'GLT_NAME', 'odwp-shwcp_gleton' );
 defined( 'GLT_PATH' ) || define( 'GLT_PATH', dirname( __FILE__ ) . '/' );
 defined( 'GLT_FILE' ) || define( 'GLT_FILE', __FILE__ );
+defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.0.1' );
+defined( 'GLT_TEMPLATE' ) || define( 'GLT_TEMPLATE', 'odwpglt-front-template.php' );
 
 
 if( ! function_exists( 'odwpglt_check_requirements' ) ) :
@@ -198,5 +200,31 @@ if( count( $odwpglt_errs ) > 0 ) {
     }
 } else {
     // Requirements are met so initialize the plugin...
+
+    if( !function_exists( 'odwpglt_load_plugin_last' ) ) :
+        /**
+         * Ensure that our plugin is loaded as the last one.
+         * @return void
+         * @since 0.0.1
+         */
+        function odwpglt_load_plugin_last()
+        {
+            $path = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
+            if ( $plugins = get_option( 'active_plugins' ) ) {
+                if ( $key = array_search( $path, $plugins ) ) {
+                    array_splice( $plugins, $key, 1 );
+                    array_push( $plugins, $path );
+                    update_option( 'active_plugins', $plugins );
+                }
+            }
+        }
+    endif;
+    add_action( 'activated_plugin', 'odwpglt_load_plugin_last' );
+
     include GLT_PATH . 'src/class-odwpglt-front.php';
+
+    $odwpglt_front = new odwpglt_front();
+    $odwpglt_front->front_init();
+
+	add_action( 'init', array( $odwpglt_front, 'get_the_current_user' ) );
 }
