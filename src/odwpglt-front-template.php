@@ -21,19 +21,19 @@ if( !defined( 'ABSPATH' ) ) {
  * Title tag support for older versions of WP (pre 4.1)
  */
 if ( ! function_exists( '_wp_render_title_tag' ) ) {
-    function wcp_slug_render_title() {
+    function odwpglt_slug_render_title() {
 	?>
 		<title><?php wp_title( '-', true, 'right' ); ?></title>
 	<?php
 	}
-    add_action( 'wp_head', 'wcp_slug_render_title' );
+    add_action( 'wp_head', 'odwpglt_slug_render_title' );
 }
 ?>
     <link rel="profile" href="http://gmpg.org/xfn/11">
     <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
     <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body id="odwpglt-front" <?php body_class(); ?>>
 
 <?php the_content(); ?>
 

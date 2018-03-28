@@ -221,6 +221,7 @@ if( count( $odwpglt_errs ) > 0 ) {
     endif;
     add_action( 'activated_plugin', 'odwpglt_load_plugin_last' );
 
+    include GLT_PATH . 'src/class-odwpglt-page_templater.php';
     include GLT_PATH . 'src/class-odwpglt-front.php';
 
     $odwpglt_front = new odwpglt_front();
