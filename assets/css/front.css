@@ -6,4 +6,8 @@
  * @since 0.0.1
  */
 
- /* Place your styles here... */
+div.lead-count {
+    padding: 0px 10px 10px 0;
+    position: relative;
+    top: -3px;
+}

@@ -44,6 +44,8 @@ class odwpglt_allleads extends odwpglt_front {
         $shwcp_upload     = $this->shwcp_upload     . $current_db;
         $shwcp_upload_url = $this->shwcp_upload_url . $current_db;
 
+        $rows_count = isset( $_GET['rows_count'] ) ? (int) $_GET['rows_count'] : 25;
+
         $this->get_the_current_user();  // load method for permissions from parent here
         $custom_role = $this->get_custom_role();
         //print_r($custom_role);
@@ -134,7 +136,6 @@ class odwpglt_allleads extends odwpglt_front {
                     }
                 }
             }
-
 
             if (isset($_GET['q']) && $_GET['q'] != '') {
                  // field conditionals
@@ -299,7 +300,8 @@ class odwpglt_allleads extends odwpglt_front {
 
         // Pagination & sorting vars
         $paginate = $this->first_tab['page_page']; // pagination set?
-        $rpp = $this->first_tab['page_page_count']; // pagination count - results per page
+        //$rpp = $this->first_tab['page_page_count']; // pagination count - results per page
+        $rpp = $rows_count;
 
           if ('true' == $paginate) { // we are paginating
             if (isset($_GET["pages"])) {
@@ -348,7 +350,6 @@ class odwpglt_allleads extends odwpglt_front {
         }
 
         //print_r($leads);
-
 
         // sort the fields by building a new array
         $leads_total_text = __('Total Entries', 'shwcp');
@@ -458,7 +459,6 @@ EOC;
                 $i++;
             }
         }
-    
 
         $wcp_main .= <<<EOC
                                     <li>	
@@ -505,8 +505,31 @@ EOC;
                     }
                 }
 
+                // TODO Move styles into external CSS file!
+                $leads_total_text = sprintf( __( '<span class="wcp-text" style="margin-right:10px;padding-right:5px;">Celkem: %1$s</span>', GLT_SLUG ), '<span class="wcp-primary">'.$lead_count.'</span>' );
+                $rows_count_text = sprintf( __( 'Zobrazit: %1$s', GLT_SLUG ), '<span class="wcp-primary">' . $rows_count . '</span>' );
+                $rc_link = esc_url( remove_query_arg( 'rows_count' ) );
+                $rows_count_10  = __( '10 řádků', GLT_SLUG );
+                $rows_count_25  = __( '25 řádků', GLT_SLUG );
+                $rows_count_50  = __( '50 řádků', GLT_SLUG );
+                $rows_count_75  = __( '75 řádků', GLT_SLUG );
+                $rows_count_100 = __( '100 řádků', GLT_SLUG );
                 $wcp_main .= <<<EOC
-                                <span class="wcp-primary">$lead_count</span> $leads_total_text
+                                $leads_total_text
+                                <span class="" style="height:21px;padding:0;margin:0;">
+                                    <ul class="sst-select" style="display:inline-block;margin-bottom:0;margin-left:0;float:none;height:21px;">
+                                        <li style="margin-right:0">
+                                            <a href="#" style="padding:6px 10px 4px 0;">$rows_count_text</a>
+                                            <ul>
+                                                <li><a href="$rc_link&amp;rows_count=10">$rows_count_10</a></li>
+                                                <li><a href="$rc_link&amp;rows_count=25">$rows_count_25</a></li>
+                                                <li><a href="$rc_link&amp;rows_count=50">$rows_count_50</a></li>
+                                                <li><a href="$rc_link&amp;rows_count=75">$rows_count_75</a></li>
+                                                <li><a href="$rc_link&amp;rows_count=100">$rows_count_100</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </span>
                             </div>
                             <div class="second-menu col-md-12">
                                 <div class="wcp-search hidden-sm hidden-md hidden-lg">
@@ -519,7 +542,6 @@ EOC;
                                         <option value="wcp_all_fields">$all_fields_text</option>
 EOC;
                 }
-
 
                 foreach ($search_select as $k => $v) {
                     if ($v->orig_name != 'l_source'
@@ -560,11 +582,11 @@ EOC;
 
 EOC;
 
-        /*if ($this->first_tab['contact_image'] == 'true') {  // if display images set
+        if ($this->first_tab['contact_image'] == 'true') {  // if display images set
             $wcp_main .= <<<EOC
                                 <th class='contact-image'></th>
 EOC;
-        }*/
+        }
 
         //print_r($leads_sorted);
         foreach ($lead_columns as $k => $v) {
@@ -599,9 +621,7 @@ EOC;
             $link_end = '</a>';
 
             $wcp_main .= <<<EOC
-
                                 <th class="table-head $orig_name">$link_beg$v $arrow$link_end</th>
-
 EOC;
             $i++;
         }
@@ -609,18 +629,14 @@ EOC;
         if ($this->can_edit) { // user can edit leads
             $wcp_main .= <<<EOC
                                 <th class='edit-header'>$edit_text</th>
-
 EOC;
         /* Custom Access can edit all or own - add quick edit header */
         } elseif ($custom_role['access'] && $custom_role['perms']['entries_edit'] == 'all'
             || $custom_role['access'] && $custom_role['perms']['entries_edit'] == 'own') {
             $wcp_main .= <<<EOC
                                 <th class='edit-header'>$edit_text</th>
-
 EOC;
         }
-            
-
 
         $wcp_main .= <<<EOC
                             </tr>
@@ -632,7 +648,6 @@ EOC;
             $i++;
             $alt = $i&1;
             $wcp_main .= <<<EOC
-
                             <tr class='wcp-row{$alt} wcp-lead-{$lead['wcp_lead_id']}'>
 EOC;
             $i2 = 1;
@@ -660,7 +675,7 @@ EOC;
                 $thumb = $shwcp_upload_url . '/' . $parts[0] . '_th.' . $ext;
             }
 
-            /*if ($this->first_tab['contact_image'] == 'true') { // if display images set
+            if ($this->first_tab['contact_image'] == 'true') { // if display images set
                 $wcp_main .= <<<EOC
 
                                 <td class="image-td" style="background: transparent url($thumb) no-repeat 20px center;">
@@ -668,7 +683,7 @@ EOC;
                                 </td>
 
 EOC;
-            }*/ 
+            }
 
             foreach ($lead as $k => $v) {
                 $v = stripslashes($v);

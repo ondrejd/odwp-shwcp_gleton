@@ -551,13 +551,10 @@ if( !class_exists( 'odwpglt_front' ) ) :
 			$current_user_login = $current_user_login->user_login;
             $login_text = __('Login', 'shwcp');
             $default_text = isset($this->first_tab['page_greeting']) ? $this->first_tab['page_greeting'] : '';
-
 			$bar_tools = '';
 			$total_leads = '';
 			$total_leads_text = '';
-
         	$wcp_main = '';
-
 			$login_link = '';
 			if (is_user_logged_in()) {
                 $login_link .= <<<EOC
@@ -720,7 +717,6 @@ EOC;
 		</div>
 	</form>
 	<div class="wcp-page page-container wcp-access-$this->current_access wcp-user-$user_ID">
-
 		<div class="pure-container" data-effect="pure-effect-slide">
             	<input type="checkbox" id="pure-toggle-left" class="pure-toggle" data-toggle="left"/>
             	<label class="pure-toggle-label" for="pure-toggle-left" data-toggle-label="left">
@@ -858,11 +854,9 @@ EOC;
 			$this->head_section .= $wcp_links;
 			$this->head_section .= <<<EOC
 					</ul>
-            	</nav>   
-            
+            	</nav>
             	<div class="pure-pusher-container">
                 	<div class="pure-pusher"><!-- Start main content area -->
-		
 						<div class="wcp-toolbar">
         					<div class="wcp-menu"></div>
         					<div class="wcp-breadcrumb">$breadcrumbs</div>
@@ -883,7 +877,6 @@ EOC;
 		<label class="pure-overlay" for="pure-toggle-left" data-overlay="left"></label>
 	</div> <!-- End drawer -->
 	<div class="wcp-footer">$page_footer</div>
-
 </div><!-- End wcp-page -->
 
 <div class="modal fade wcp-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
