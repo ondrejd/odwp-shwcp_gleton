@@ -167,7 +167,7 @@ endif;
 $odwpglt_errs = odwpglt_check_requirements( [
     'php' => [
         // Enter minimum PHP version you needs
-        'version' => '5.6',
+        'version' => '5.4',
         // Enter extensions that your plugin needs
         'extensions' => [
             //'gd',
