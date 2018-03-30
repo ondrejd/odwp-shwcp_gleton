@@ -477,7 +477,7 @@ if( !class_exists( 'odwpglt_front' ) ) :
             global $wpdb;
 
             // custom access role
-            $custom_role = $this->get_custom_role();
+			$custom_role = $this->get_custom_role();
             // Total lead count
             $ownleads = '';
             
@@ -571,7 +571,6 @@ EOC;
 	</div>
 EOC;
             }
-
 
 			if ($this->can_access ) {  // general access to the leads
         		if ('frontsort' == $this->curr_page) {  // Front fields sorting
@@ -718,10 +717,18 @@ EOC;
 	</form>
 	<div class="wcp-page page-container wcp-access-$this->current_access wcp-user-$user_ID">
 		<div class="pure-container" data-effect="pure-effect-slide">
+EOC;
+
+			if ($this->current_access == 'full') {
+				$this->head_section .= <<<EOC
             	<input type="checkbox" id="pure-toggle-left" class="pure-toggle" data-toggle="left"/>
             	<label class="pure-toggle-label" for="pure-toggle-left" data-toggle-label="left">
 					<span class="pure-toggle-icon"></span>
 				</label>
+EOC;
+			}
+
+			$this->head_section .= <<<EOC
             	<nav class="pure-drawer" data-position="left">
 					<div class="wcp-logo">$logo</div>
 					<ul class="drawer-menu">
@@ -851,6 +858,11 @@ EOC;
 
 			$wcp_links = apply_filters('wcp_menu_links_filter', $wcp_links); // Add filter for just the links
 
+			$breadcrumb_div_style = ' style="margin-left:0"';
+			if ($this->current_access == 'full') {
+				$breadcrumb_div_style = '';
+			}
+
 			$this->head_section .= $wcp_links;
 			$this->head_section .= <<<EOC
 					</ul>
@@ -859,7 +871,7 @@ EOC;
                 	<div class="pure-pusher"><!-- Start main content area -->
 						<div class="wcp-toolbar">
         					<div class="wcp-menu"></div>
-        					<div class="wcp-breadcrumb">$breadcrumbs</div>
+        					<div class="wcp-breadcrumb"$breadcrumb_div_style>$breadcrumbs</div>
 							$login_link
 							$bar_tools
         					<div class="clear-both"></div>
