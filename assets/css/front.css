@@ -6,8 +6,36 @@
  * @since 0.0.1
  */
 
+/*
+ * Úprava toolbaru (pravé části).
+ */
 div.lead-count {
     padding: 0px 10px 10px 0;
     position: relative;
     top: -3px;
+}
+
+/*
+ * Karty s informacemi o kontaktu ({@see class-odwpglt-individual.php}).
+ */
+h4.odwpglt-info_card--title {
+    margin: 0 0 5px 0;
+}
+div.odwpglt-info_card {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    height: 130px;
+    margin-top: 00px;
+    padding: 20px;
+    width: 100%;
+}
+div.odwpglt-info_card .odwpglt-info_card--label {
+    color: rgba(0,0,0,0.54);
+    float: left;
+    width: 36%;
+}
+div.odwpglt-info_card .odwpglt-info_card--value {
+    float: left;
+    width: 64%;
 }

@@ -586,8 +586,12 @@ EOC;
                     $wcp_ind_manage = new wcp_ind_manage();
                     $this->main_section = apply_filters('wcp_ind_manage_filter', $wcp_ind_manage->manage_individual());
 				} elseif ('entry' == $this->curr_page) { // Individual Lead page
-					require_once(SHWCP_ROOT_PATH  . '/includes/class-wcp-individual.php');
-					$wcp_individual = new wcp_individual();
+					//require_once(SHWCP_ROOT_PATH  . '/includes/class-wcp-individual.php');
+					//$wcp_individual = new wcp_individual();
+					//@#!/(our code)
+					include GLT_PATH . 'src/class-odwpglt-individual.php';
+					$wcp_individual = new odwpglt_individual();
+					//@#!/(our code)
 					$this->main_section = apply_filters('wcp_individual_filter', $wcp_individual->get_individual($db));
 					$lead_id = intval($_GET['entry']);
 					$bar_tools = $this->top_search($search_select);
