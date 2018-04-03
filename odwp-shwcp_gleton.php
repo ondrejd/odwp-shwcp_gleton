@@ -159,9 +159,6 @@ if( !function_exists( 'readonly' ) ) :
 endif;
 
 
-if( !)
-
-
 /**
  * Errors from the requirements check
  * @var array
