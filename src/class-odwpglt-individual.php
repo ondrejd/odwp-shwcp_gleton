@@ -12,6 +12,28 @@ class odwpglt_individual extends main_wcp {
 	//    parent::__construct();
 	//}
 
+	/**
+	 * @global wpdb $wpdb
+	 * @param string $name
+	 * @param integer $key
+	 * @return string
+	 * @return 0.1.0
+	 */
+	public function get_dropdown_value_name( $name, $key ) {
+		global $wpdb;
+
+		$vals = $wpdb->get_results(
+			"
+				SELECT s.sst_id, s.sst_name
+				FROM $this->table_sst s
+				WHERE s.sst_type_desc = '$name'
+				ORDER BY s.sst_order DESC;
+			", OBJECT_K
+		);
+
+		return isset( $vals[$key] ) ? $vals[$key]->sst_name : '---';
+	}
+
 	/*
 	 * Individual Lead page
 	 */
@@ -726,15 +748,12 @@ EOC;
 		$info_address_label2 = __( 'Město', GLT_SLUG );
 		$info_address_value2 = $lead_vals['extra_column_1'];
 		$info_address_label3 = __( 'Kraj', GLT_SLUG );
-		// XXX My dostaneme ID hodnoty, ale ne zobrazitelný název!
-		$info_address_value3 = $lead_vals['extra_column_2'];
+		$info_address_value3 = $this->get_dropdown_value_name( 'extra_column_2', (int) $lead_vals['extra_column_2'] );
 		$info_others_title   = __( 'Ostatní', GLT_SLUG );
 		$info_others_label1  = __( 'Právní forma', GLT_SLUG );
-		$info_others_value1  = $lead_vals['extra_column_7'];
+		$info_others_value1  = $this->get_dropdown_value_name( 'extra_column_7', (int) $lead_vals['extra_column_7'] );
 		$info_others_label2  = __( 'Obor', GLT_SLUG );
-		// XXX My dostaneme ID hodnoty, ale ne zobrazitelný název!
-		$info_others_value2  = $lead_vals['extra_column_8'];
-		// XXX Web by měl být editovatelný!
+		$info_others_value2  = $this->get_dropdown_value_name( 'extra_column_8', (int) $lead_vals['extra_column_8'] );
 		$info_others_label3  = __( 'Web', GLT_SLUG );
 		$info_others_value3  = $lead_vals['extra_column_9'];
 		$info_cards_section  = <<<EOC
@@ -757,7 +776,7 @@ EOC;
 												<span class="odwpglt-info_card--label">$info_address_label2</span>
 												<span class="odwpglt-info_card--value">$info_address_value2</span>
 												<span class="odwpglt-info_card--label">$info_address_label3</span>
-												<span class="odwpglt-info_card--value" style="color:#f30">$info_address_value3</span>
+												<span class="odwpglt-info_card--value">$info_address_value3</span>
 												<div style="clear:both"></div>
 											</div>
 										</div>
@@ -765,9 +784,9 @@ EOC;
 											<h4 class="odwpglt-info_card--title">$info_others_title</h4>
 											<div class="odwpglt-info_card">
 												<span class="odwpglt-info_card--label">$info_others_label1</span>
-												<span class="odwpglt-info_card--value" style="color:#f30">$info_others_value1</span>
+												<span class="odwpglt-info_card--value">$info_others_value1</span>
 												<span class="odwpglt-info_card--label">$info_others_label2</span>
-												<span class="odwpglt-info_card--value" style="color:#f30">$info_others_value2</span>
+												<span class="odwpglt-info_card--value">$info_others_value2</span>
 												<span class="odwpglt-info_card--label">$info_others_label3</span>
 												<span class="odwpglt-info_card--value"><a href="$info_others_value3" target="_blank">$info_others_value3</a></span>
 												<div style="clear:both"></div>
