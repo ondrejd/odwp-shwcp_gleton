@@ -3,7 +3,7 @@
  * Plugin Name: Customizations for WP Contacts plugin
  * Plugin URI: https://github.com/ondrejd/odwp-shwcp_gleton
  * Description: Plugin that changes behavior of <a href="http://wpcontacts.co/" target="blank">WP Contacts</a> plugin in way which one of my clients wanted.
- * Version: 0.0.1
+ * Version: 0.1.0
  * Author: Ondřej Doněk
  * Author URI: https://ondrejd.com/
  * License: GPLv3
@@ -47,11 +47,11 @@ defined( 'GLT_SLUG' ) || define( 'GLT_SLUG', 'odwpglt' );
 defined( 'GLT_NAME' ) || define( 'GLT_NAME', 'odwp-shwcp_gleton' );
 defined( 'GLT_PATH' ) || define( 'GLT_PATH', dirname( __FILE__ ) . '/' );
 defined( 'GLT_FILE' ) || define( 'GLT_FILE', __FILE__ );
-defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.0.1' );
+defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.1.0' );
 defined( 'GLT_TEMPLATE' ) || define( 'GLT_TEMPLATE', 'odwpglt-front-template.php' );
 
 
-if( ! function_exists( 'odwpglt_check_requirements' ) ) :
+if( !function_exists( 'odwpglt_check_requirements' ) ) :
     /**
      * Checks requirements of our plugin.
      * @global string $wp_version
@@ -121,7 +121,7 @@ if( ! function_exists( 'odwpglt_check_requirements' ) ) :
 endif;
 
 
-if( ! function_exists( 'odwpglt_deactivate_raw' ) ) :
+if( !function_exists( 'odwpglt_deactivate_raw' ) ) :
     /**
      * Deactivate plugin by the raw way (it updates directly WP options).
      * @return void
@@ -142,7 +142,7 @@ if( ! function_exists( 'odwpglt_deactivate_raw' ) ) :
 endif;
 
 
-if( ! function_exists( 'readonly' ) ) :
+if( !function_exists( 'readonly' ) ) :
     /**
      * Prints HTML readonly attribute. It's an addition to WP original
      * functions {@see disabled()} and {@see checked()}.
@@ -157,6 +157,9 @@ if( ! function_exists( 'readonly' ) ) :
         }
     }
 endif;
+
+
+if( !)
 
 
 /**
