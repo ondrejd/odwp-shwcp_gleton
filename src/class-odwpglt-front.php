@@ -410,7 +410,33 @@ if( !class_exists( 'odwpglt_front' ) ) :
             wp_register_script( 'odwpglt-front', plugins_url( '', GLT_FILE ) . '/assets/js/front.js', array( 'jquery' ), 'GLT_VERSION', true );
             wp_enqueue_script( 'odwpglt-front' );
             wp_localize_script( 'odwpglt-front', 'odwpglt', array(
-                // Put localized values here...
+				// Statuses & substatuses
+				'statuses' => array(
+					1 => array(
+						'label' => __( 'neosloveno', GLT_FILE ),
+						'items' => array()
+					),
+					2 => array(
+						'label' => __( 'otevřeno', GLT_FILE ),
+						'items' => array(
+							'1' => __( 'nedovolal', GLT_FILE ),
+							'2' => __( 'zájem', GLT_FILE ),
+							'3' => __( 'váhá', GLT_FILE ),
+							'4' => __( 'email', GLT_FILE ),
+							'5' => __( 'v budoucnu', GLT_FILE ),
+							'6' => __( 'kalkulace', GLT_FILE ),
+							'7' => __( 'obchod', GLT_FILE ),
+						),
+					),
+					3 => array(
+						'label' => __( 'uzavřeno', GLT_FILE ),
+						'items' => array(
+							'1' => __( 'nezájem', GLT_FILE ),
+							'2' => __( 'smlouva', GLT_FILE ),
+							'3' => __( 'sekretářka', GLT_FILE ),
+						),
+					)
+				),
             ));
         }
 

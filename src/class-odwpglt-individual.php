@@ -31,7 +31,7 @@ class odwpglt_individual extends main_wcp {
 			", OBJECT_K
 		);
 
-		return isset( $vals[$key] ) ? $vals[$key]->sst_name : '---';
+		return isset( $vals[$key] ) ? $vals[$key]->sst_name : '';
 	}
 
 	/*
@@ -735,27 +735,39 @@ EOC;
 EOC;
 		}
 
-
 		// Info cards
 		$info_common_title   = __( 'Základní informace', GLT_SLUG );
 		$info_common_label1  = __( 'Firma', GLT_SLUG );
 		$info_common_value1  = $lead_vals['first_name'];
 		$info_common_label2  = __( 'IČO', GLT_SLUG );
-		$info_common_value2  = $lead_vals['extra_column_3'];
+		$info_common_value2  = $lead_vals[GLT_ICO_FIELD];
 		$info_address_title  = __( 'Adresa', GLT_SLUG );
 		$info_address_label1 = __( 'Ulice', GLT_SLUG );
 		$info_address_value1 = $lead_vals['last_name'];
 		$info_address_label2 = __( 'Město', GLT_SLUG );
-		$info_address_value2 = $lead_vals['extra_column_1'];
+		$info_address_value2 = $lead_vals[GLT_MESTO_FIELD];
 		$info_address_label3 = __( 'Kraj', GLT_SLUG );
-		$info_address_value3 = $this->get_dropdown_value_name( 'extra_column_2', (int) $lead_vals['extra_column_2'] );
+		$info_address_value3 = $this->get_dropdown_value_name( GLT_KRAJ_FIELD, (int) $lead_vals[GLT_KRAJ_FIELD] );
 		$info_others_title   = __( 'Ostatní', GLT_SLUG );
 		$info_others_label1  = __( 'Právní forma', GLT_SLUG );
-		$info_others_value1  = $this->get_dropdown_value_name( 'extra_column_7', (int) $lead_vals['extra_column_7'] );
+		$info_others_value1  = $this->get_dropdown_value_name( GLT_PRAVNIFORMA_FIELD, (int) $lead_vals[GLT_PRAVNIFORMA_FIELD] );
 		$info_others_label2  = __( 'Obor', GLT_SLUG );
-		$info_others_value2  = $this->get_dropdown_value_name( 'extra_column_8', (int) $lead_vals['extra_column_8'] );
+		$info_others_value2  = $this->get_dropdown_value_name( GLT_OBOR_FIELD, (int) $lead_vals[GLT_OBOR_FIELD] );
 		$info_others_label3  = __( 'Web', GLT_SLUG );
-		$info_others_value3  = $lead_vals['extra_column_9'];
+		$info_others_icolbl3 = __( 'Upravte zadané URL', GLT_SLUG );
+		$info_others_submit3 = __( 'Uložit', GLT_SLUG );
+		$info_others_cancel3 = __( 'Zrušit', GLT_SLUG );
+		$info_others_value3  = $lead_vals[GLT_WEB_FIELD];
+
+		$info_common_value1  = empty( $info_common_value1 )  ? '&nbsp;' : $info_common_value1;
+		$info_common_value2  = empty( $info_common_value2 )  ? '&nbsp;' : $info_common_value2;
+		$info_address_value1 = empty( $info_address_value1 ) ? '&nbsp;' : $info_address_value1;
+		$info_address_value2 = empty( $info_address_value2 ) ? '&nbsp;' : $info_address_value2;
+		$info_address_value3 = empty( $info_address_value3 ) ? '&nbsp;' : $info_address_value3;
+		$info_others_value1  = empty( $info_others_value1 )  ? '&nbsp;' : $info_others_value1;
+		$info_others_value2  = empty( $info_others_value2 )  ? '&nbsp;' : $info_others_value2;
+		$info_others_value3  = empty( $info_others_value3 )  ? '&nbsp;' : $info_others_value3;
+
 		$info_cards_section  = <<<EOC
 									<div class="odwpglt-info_cards_section row">
 										<div class="col-md-4">
@@ -787,8 +799,16 @@ EOC;
 												<span class="odwpglt-info_card--value">$info_others_value1</span>
 												<span class="odwpglt-info_card--label">$info_others_label2</span>
 												<span class="odwpglt-info_card--value">$info_others_value2</span>
-												<span class="odwpglt-info_card--label">$info_others_label3</span>
-												<span class="odwpglt-info_card--value"><a href="$info_others_value3" target="_blank">$info_others_value3</a></span>
+												<span class="odwpglt-info_card--label">
+													$info_others_label3
+													<i id="odwpglt-change_url_individual-icon" class="wcp-sm md-create" title="$info_others_icolbl3"></i>
+												</span>
+												<span class="odwpglt-info_card--value">
+													<a id="odwpglt-change_url_individual-link" href="$info_others_value3" target="_blank">$info_others_value3</a>
+													<input id="odwpglt-change_url_individual-input" style="display:none" type="text" value="$info_others_value3">
+													<span class="wcp-button" id="odwpglt-change_url_individual-submit" style="display:none">$info_others_submit3</span>
+													<span class="wcp-button" id="odwpglt-change_url_individual-cancel" style="display:none">$info_others_cancel3</span>
+												</span>
 												<div style="clear:both"></div>
 											</div>
 										</div>
@@ -796,6 +816,169 @@ EOC;
 EOC;
 		$info_cards_section .= <<<EOC
 									</div><!-- .odwpglt-info_cards_section -->
+
+EOC;
+
+
+		// Campaigns (PPC,SEO,Web)
+		$campaigns_title = __( 'Kampaň', GLT_SLUG );
+		$campaigns_select_lbl = __( 'Vyberte kampaň:', GLT_SLUG );
+		$campaigns_section  = <<<EOC
+							<div class="odwpglt-campaign row">
+								<h4 class="odwpglt-campaign--title">$campaigns_title</h4>
+								<div class="odwpglt-campaign--card">
+									<div>
+										<div>
+											<b>$campaigns_select_lbl</b>
+											<span class="odwpglt-campaign--field">
+												<input class="odwpglt-campaign--checkbox" id="odwpglt-campaign_ppc--checkbox" type="checkbox" value="ppc" checked>
+												<label for="odwpglt-campaign_ppc--checkbox">PPC</label>
+											</span>
+											<span class="odwpglt-campaign--field">
+												<input class="odwpglt-campaign--checkbox" id="odwpglt-campaign_seo--checkbox" type="checkbox" value="seo">
+												<label for="odwpglt-campaign_seo--checkbox">SEO</label>
+											</span>
+											<span class="odwpglt-campaign--field">
+												<input class="odwpglt-campaign--checkbox" id="odwpglt-campaign_web--checkbox" type="checkbox" value="web">
+												<label for="odwpglt-campaign_web--checkbox">Web</label>
+											</span>
+										</div>
+									</div>
+								</div>
+
+EOC;
+
+		$campaigns_section .= <<<EOC
+							</div><!-- .odwpglt-campaign -->
+
+EOC;
+
+		$campaign_status_title = __( 'Stav kampaně:', GLT_SLUG );
+		$campaign_status_lbl = __( 'Stav: ', GLT_SLUG );
+		$campaign_substatus_lbl = __( 'Podstav: ', GLT_SLUG );
+		$campaign_status_1 = __( 'neosloveno', GLT_SLUG );
+		$campaign_status_2 = __( 'otevřeno', GLT_SLUG );
+		$campaign_status_3 = __( 'uzavřeno', GLT_SLUG );
+		$campaign_note_title = __( 'Poznámka:', GLT_SLUG );
+		$campaign_date_title = __( 'Datum příštího kontaktu:', GLT_SLUG );
+
+		$today = new DateTime();
+		$today_plus_0 = $today->format('Y-m-d');
+		$today_plus_3 = $today->modify('+3 days')->format('Y-m-d');
+		$today_plus_5 = $today->modify('+5 days')->format('Y-m-d');
+
+		$campaign_date_sel_0 = __( 'jiné: ', GLT_SLUG );
+		$campaign_date_sel_3 = sprintf( __( ' 3 dny (%1$s)', GLT_SLUG ), $today->modify('+3 days')->format('j.n.Y') );
+		$campaign_date_sel_5 = sprintf( __( ' 5 dní (%1$s)', GLT_SLUG ), $today->modify('+5 days')->format('j.n.Y') );
+
+/*
+FIXED Stav (editable) (neosloveno, otevřeno, uzavřeno)
+FIXED Podstav (volí na základě Stavu) (Otevřeno: nedovolal, zájem, váha, email, v budoucnu, kalkulace, obchod) (Uzavřeno: nezájem, smlouva, sekretářka)
+XXX Poznámka
+XXX Datum dalšího kontaktu (checkboxy: 3dny a 5dní + volitelné datum)
+*/
+		// Campaign: PPC
+		$campaign_ppc_style = (/* XXX Should be visible? */true) ? '' : ' style="display:none"';
+		$campaign_ppc_title = __( 'Kampaň PPC', GLT_SLUG );
+		$campaigns_section .= <<<EOC
+							<div class="odwpglt-campaign odwpglt-campaign--sub odwpglt-campaign_ppc row"$campaign_ppc_style>
+								<h5 class="odwpglt-campaign--title">$campaign_ppc_title</h5>
+								<div class="odwpglt-info_card">
+									<p>
+										<!-- <b>$campaign_status_title</b> -->
+										<label for="odwpglt-campaign_ppc--status">$campaign_status_lbl</label>
+										<select class="odwpglt-campaign-status" data-status="1" id="odwpglt-campaign_ppc--status">
+											<option value="1">$campaign_status_1</option>
+											<option value="2">$campaign_status_2</option>
+											<option value="3">$campaign_status_3</option>
+										</select>
+										<label for="odwpglt-campaign_ppc--substatus">$campaign_substatus_lbl</label>
+										<select class="odwpglt-campaign-substatus" data-substatus="0" disabled="disabled" id="odwpglt-campaign_ppc--substatus">
+											<option value="0">&ndash;&ndash;&ndash;</option>
+										</select>
+									</p>
+									<p>
+										<label for="odwpglt-campaign_ppc--note">$campaign_note_title</b>
+										<textarea class="odwpglt-campaign--note" disabled="disabled" id="odwpglt-campaign_ppc--note"></textarea>
+									</p>
+									<p><label for="odwpglt-campaign_ppc--date">$campaign_date_title</label></p>
+									<ul class="odwpglt-campaign--date">
+										<li><label for="odwpglt-campaign_ppc--date3"><input checked="checked" disabled="disabled" id="odwpglt-campaign_ppc--date3" type="radio" value="$today_plus_3">$campaign_date_sel_3</label></li>
+										<li><label for="odwpglt-campaign_ppc--date5"><input disabled="disabled" id="odwpglt-campaign_ppc--date5" type="radio" value="$today_plus_3">$campaign_date_sel_5</label></li>
+										<li><label for="odwpglt-campaign_ppc--date0"><input disabled="disabled" id="odwpglt-campaign_ppc--date0" type="radio" value="$today_plus_0">$campaign_date_sel_0</label><input disabled="disabled" id="odwpglt-campaign_ppc--date" type="date"></li>
+									</ul>
+								</div>
+							</div>
+
+EOC;
+
+		// Campaign: SEO
+		$campaign_seo_style = (/* XXX Should be visible? */false) ? '' : ' style="display:none"';
+		$campaign_seo_title = __( 'Kampaň SEO', GLT_SLUG );
+		$campaigns_section .= <<<EOC
+							<div class="odwpglt-campaign odwpglt-campaign--sub odwpglt-campaign_seo row"$campaign_seo_style>
+								<h5 class="odwpglt-campaign--title">$campaign_seo_title</h5>
+								<div class="odwpglt-info_card">
+									<p style="text-align:center">
+										<b>$campaign_status_title</b>
+										<label for="odwpglt-campaign_seo--status">$campaign_status_lbl</label>
+										<select class="odwpglt-campaign-status" data-status="1" id="odwpglt-campaign_seo--status">
+											<option value="1">$campaign_status_1</option>
+											<option value="2">$campaign_status_2</option>
+											<option value="3">$campaign_status_3</option>
+										</select>
+										<label for="odwpglt-campaign_seo--substatus">$campaign_substatus_lbl</label>
+										<select class="odwpglt-campaign-substatus" data-substatus="0" disabled="disabled" id="odwpglt-campaign_seo--substatus">
+											<option value="0">&ndash;&ndash;&ndash;</option>
+										</select>
+									</p>
+									<p>
+										<label for="odwpglt-campaign_seo--note">$campaign_note_title</b>
+										<textarea class="odwpglt-campaign--note" disabled="disabled" id="odwpglt-campaign_seo--note"></textarea>
+									</p>
+									<p><label for="odwpglt-campaign_seo--date">$campaign_date_title</label></p>
+									<ul class="odwpglt-campaign--date">
+										<li><label for="odwpglt-campaign_seo--date3"><input checked="checked" disabled="disabled" id="odwpglt-campaign_seo--date3" type="radio" value="$today_plus_3">$campaign_date_sel_3</label></li>
+										<li><label for="odwpglt-campaign_seo--date5"><input disabled="disabled" id="odwpglt-campaign_seo--date5" type="radio" value="$today_plus_3">$campaign_date_sel_5</label></li>
+										<li><label for="odwpglt-campaign_seo--date0"><input disabled="disabled" id="odwpglt-campaign_seo--date0" type="radio" value="$today_plus_0">$campaign_date_sel_0</label><input disabled="disabled" id="odwpglt-campaign_ppc--date" type="date"></li>
+									</ul>
+								</div>
+							</div>
+
+EOC;
+
+		// Campaign: Web
+		$campaign_web_style = (/* XXX Should be visible? */false) ? '' : ' style="display:none"';
+		$campaign_web_title = __( 'Kampaň Web', GLT_SLUG );
+		$campaigns_section .= <<<EOC
+							<div class="odwpglt-campaign odwpglt-campaign--sub odwpglt-campaign_web row"$campaign_web_style>
+								<h5 class="odwpglt-campaign--title">$campaign_web_title</h5>
+								<div>
+									<p style="text-align:center">
+										<b>$campaign_status_title</b>
+										<label for="odwpglt-campaign_web--status">$campaign_status_lbl</label>
+										<select id="odwpglt-campaign_web--status" class="odwpglt-campaign-status" data-status="1">
+											<option value="1">$campaign_status_1</option>
+											<option value="2">$campaign_status_2</option>
+											<option value="3">$campaign_status_3</option>
+										</select>
+										<label for="odwpglt-campaign_web--substatus">$campaign_substatus_lbl</label>
+										<select class="odwpglt-campaign-substatus" data-substatus="0" disabled="disabled" id="odwpglt-campaign_web--substatus">
+											<option value="0">&ndash;&ndash;&ndash;</option>
+										</select>
+									</p>
+									<p>
+										<label for="odwpglt-campaign_web--note">$campaign_note_title</b>
+										<textarea class="odwpglt-campaign--note" disabled="disabled" id="odwpglt-campaign_ppc--note"></textarea>
+									</p>
+									<p><label for="odwpglt-campaign_ppc--date">$campaign_date_title</label></p>
+									<ul class="odwpglt-campaign--date">
+										<li><label for="odwpglt-campaign_web--date3"><input checked="checked" disabled="disabled" id="odwpglt-campaign_web--date3" type="radio" value="$today_plus_3">$campaign_date_sel_3</label></li>
+										<li><label for="odwpglt-campaign_web--date5"><input disabled="disabled" id="odwpglt-campaign_web--date5" type="radio" value="$today_plus_3">$campaign_date_sel_5</label></li>
+										<li><label for="odwpglt-campaign_web--date0"><input disabled="disabled" id="odwpglt-campaign_web--date0" type="radio" value="$today_plus_0">$campaign_date_sel_0</label><input disabled="disabled" id="odwpglt-campaign_ppc--date" type="date"></li>
+									</ul>
+								</div>
+							</div>
 
 EOC;
 
@@ -973,7 +1156,9 @@ EOC;
 
 			// Add info cards
 			$entry_content .= $info_cards_section;
-			// XXX Implement also individual settings?
+
+			// Add campaign
+			$entry_content .= $campaigns_section;
 
             foreach ($individual_layout as $k => $v) {
                 if ($v['pos'] == 'right_side') {

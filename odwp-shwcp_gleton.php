@@ -49,6 +49,7 @@ defined( 'GLT_PATH' ) || define( 'GLT_PATH', dirname( __FILE__ ) . '/' );
 defined( 'GLT_FILE' ) || define( 'GLT_FILE', __FILE__ );
 defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.1.0' );
 defined( 'GLT_TEMPLATE' ) || define( 'GLT_TEMPLATE', 'odwpglt-front-template.php' );
+defined( 'GLT_CPT' ) || define( 'GLT_CPT', 'odwpglt_campaign' );
 
 
 if( !function_exists( 'odwpglt_check_requirements' ) ) :
@@ -200,6 +201,9 @@ if( count( $odwpglt_errs ) > 0 ) {
     }
 } else {
     // Requirements are met so initialize the plugin...
+    // FIXED Přidat nový CPT "kampaň"
+    // TODO Přidat pro kampaně meta boxy (pečovatel, typ)
+    // TODO Typy musí být definovatelné
 
     if( !function_exists( 'odwpglt_load_plugin_last' ) ) :
         /**
@@ -221,6 +225,8 @@ if( count( $odwpglt_errs ) > 0 ) {
     endif;
     add_action( 'activated_plugin', 'odwpglt_load_plugin_last' );
 
+    include GLT_PATH . 'defines.php';
+    include GLT_PATH . 'src/class-odwpglt-campaigns.php';
     include GLT_PATH . 'src/class-odwpglt-page_templater.php';
     include GLT_PATH . 'src/class-odwpglt-front.php';
 

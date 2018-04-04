@@ -12,30 +12,73 @@
 div.lead-count {
     padding: 0px 10px 10px 0;
     position: relative;
-    top: -3px;
-}
+    top: -3px; }
 
 /*
  * Karty s informacemi o kontaktu ({@see class-odwpglt-individual.php}).
  */
-h4.odwpglt-info_card--title {
-    margin: 0 0 5px 0;
-}
-div.odwpglt-info_card {
+.odwpglt-info_card {
     background-color: #fff;
     border: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     height: 130px;
     margin-top: 00px;
     padding: 20px;
-    width: 100%;
-}
-div.odwpglt-info_card .odwpglt-info_card--label {
-    color: rgba(0,0,0,0.54);
-    float: left;
-    width: 36%;
-}
-div.odwpglt-info_card .odwpglt-info_card--value {
-    float: left;
-    width: 64%;
-}
+    width: 100%; }
+    .odwpglt-info_card--title {
+        margin: 10px 0 5px 0;
+        text-align: center; }
+    .odwpglt-info_card--label {
+        color: rgba(0,0,0,0.54);
+        float: left;
+        width: 36%; }
+        .odwpglt-info_card--label .md-create {
+            cursor: pointer; }
+    .odwpglt-info_card--value {
+        float: left;
+        width: 64%; }
+        .odwpglt-info_card--value input[type="text"] {
+            height: 20px; }
+        .odwpglt-info_card--value .wcp-button {
+            color: #666;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 16px;
+            margin: 0;
+            padding: 4px 7px;
+            text-transform: none; }
+
+.odwpglt-campaign {
+    display: table;
+    margin-left: 0;
+    width: 100%; }
+    .odwpglt-campaign h4.odwpglt-campaign--title, .odwpglt-campaign h5.odwpglt-campaign--title {
+        margin: 20px 0 10px 0;
+        text-align: center; }
+    .odwpglt-campaign > div { display: table-row; }
+    .odwpglt-campaign > div > div { display: table-cell; text-align: center; vertical-align: middle; }
+    .odwpglt-campaign > div > div > b { display: none; }
+    .odwpglt-campaign .odwpglt-campaign--card > div > div > b { display: none; }
+    .odwpglt-campaign .odwpglt-campaign--field { margin-left: 20px; }
+    .odwpglt-campaign > div > div > *, .odwpglt-campaign .odwpglt-campaign--card > * { font-size: 16px; }
+    .odwpglt-campaign--sub h5.odwpglt-campaign--title { font-size: 16px; }
+    .odwpglt-campaign--sub .odwpglt-info_card { text-align: center; }
+    .odwpglt-campaign--sub .odwpglt-info_card select { margin: 0px 10px; padding: 2px 5px; }
+    .odwpglt-campaign--sub .odwpglt-campaign-status { color: #fff; margin-right: 10px; min-width: 140px; padding: 2px 5px; }
+    .odwpglt-campaign--sub .odwpglt-campaign-status[data-status="1"] { background-color: #f30; }
+    .odwpglt-campaign--sub .odwpglt-campaign-status[data-status="2"] { background-color: #06a; }
+    .odwpglt-campaign--sub .odwpglt-campaign-status[data-status="3"] { background-color: #2a0; }
+    .odwpglt-campaign--sub .odwpglt-campaign-substatus { color: #000; min-width: 140px; padding: 2px 5px; }
+    .odwpglt-campaign--sub .odwpglt-campaign-substatus[data-substatus="0"] { background-color: #f30; color: #fff; }
+    .odwpglt-campaign--sub .odwpglt-campaign--note {
+        border: 1px solid #ccc;
+        color: #666;
+        margin: 5px 20px;
+        padding: 5px 10px;
+        width: calc(100% - 40px); }
+    .odwpglt-campaign--sub .odwpglt-campaign--note:disabled { background-color: #f2f2f2; }
+    .odwpglt-campaign input[type="checkbox"] + label { padding-left: 25px; padding-right: 20px; }
+    .odwpglt-campaign--sub .odwpglt-campaign--date { list-style: none; }
+    .odwpglt-campaign--sub .odwpglt-campaign--date li { display: inline-block; padding: 0 5px; }
+    .odwpglt-campaign--sub .odwpglt-campaign--date input[type="radio"] { height: 16px; }
