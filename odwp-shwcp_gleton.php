@@ -202,8 +202,7 @@ if( count( $odwpglt_errs ) > 0 ) {
 } else {
     // Requirements are met so initialize the plugin...
     // FIXED Přidat nový CPT "kampaň"
-    // TODO Přidat pro kampaně meta boxy (pečovatel, typ)
-    // TODO Typy musí být definovatelné
+    // TODO Přidat na front-end admina do seznamu kontaktů ikonku s odkazem na seznam kampaní.
 
     if( !function_exists( 'odwpglt_load_plugin_last' ) ) :
         /**
@@ -225,11 +224,41 @@ if( count( $odwpglt_errs ) > 0 ) {
     endif;
     add_action( 'activated_plugin', 'odwpglt_load_plugin_last' );
 
+    if( !function_exists( 'odwpglt_init_campaigns_cpt' ) ) :
+        /**
+         * Register our custom post type.
+         * @return void
+         * @since 0.1.0
+         */
+        function odwpglt_init_campaigns_cpt() {
+            register_post_type( GLT_CPT, array(
+                'labels' => array(
+                    'name' => __( 'Kampaně', GLT_SLUG ),
+                    'singular_name' => __( 'Kampaň', GLT_SLUG )
+                ),
+                'public' => false,
+                'has_archive' => false,
+                'exclude_from_search' => true,
+                'show_ui' => false,
+                'show_in_menu' => false,
+                'show_in_admin_bar' => false,
+                'hierarchical' => false,
+                'query_var' => false,
+                'can_export' => true,
+                'menu_position' => 50,
+                'menu_icon' => SHWCP_ROOT_URL . '/assets/img/wcp-16.png',
+                'supports' => array( 'title', 'author' ),
+            ) );
+        }
+    endif;
+    add_action( 'init', 'odwpglt_init_campaigns_cpt' );
+
+    // Include all what is required
     include GLT_PATH . 'defines.php';
-    include GLT_PATH . 'src/class-odwpglt-campaigns.php';
     include GLT_PATH . 'src/class-odwpglt-page_templater.php';
     include GLT_PATH . 'src/class-odwpglt-front.php';
 
+    // And initialize it
     $odwpglt_front = new odwpglt_front();
     $odwpglt_front->front_init();
 

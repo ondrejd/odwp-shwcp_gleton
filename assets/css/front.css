@@ -15,6 +15,12 @@ div.lead-count {
     top: -3px; }
 
 /*
+ * Hlavni tabulka
+ */
+.odwpglt-lead_campaigns { cursor: pointer; }
+.odwpglt-lead_campaigns i { color: #f30; }
+
+/*
  * Karty s informacemi o kontaktu ({@see class-odwpglt-individual.php}).
  */
 .odwpglt-info_card {

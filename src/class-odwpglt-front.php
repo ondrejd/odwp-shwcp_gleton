@@ -545,25 +545,27 @@ if( !class_exists( 'odwpglt_front' ) ) :
 					$home = __('Clear Filters', 'shwcp');
 				}
 			}
-			$main_page        = __('All Entries', 'shwcp');
-			$settings_link    = __('Settings', 'shwcp');
-			$page_front       = __('Manage Front Page', 'shwcp');
-			$page_front_arg   = add_query_arg( array('wcp' => 'frontsort'), get_permalink() );
-			$man_ind          = __('Manage Individual Page', 'shwcp');
-			$man_ind_arg      = add_query_arg( array('wcp' => 'man-ind'), get_permalink() );
-			$page_fields      = __('Manage Fields', 'shwcp');
-			$page_fields_arg  = add_query_arg( array('wcp' => 'fields'), get_permalink() );
-			$page_entry       = __('Individual Entry', 'shwcp');
-			$page_entry_arg   = add_query_arg( array('wcp' => 'entry'), get_permalink() );
-			$page_export      = __('Import & Export', 'shwcp');
-			$page_export_arg  = add_query_arg( array('wcp' => 'ie'), get_permalink() );
-			$page_stats       = __('Statistics', 'shwcp');
-			$page_stats_arg   = add_query_arg( array('wcp' => 'stats'), get_permalink() );
-			$page_logging     = __('Logging', 'shwcp');
-			$page_logging_arg = add_query_arg( array('wcp' => 'logging'), get_permalink() );
-			$page_events      = __('Events', 'shwcp');
-			$page_events_arg  = add_query_arg( array('wcp' => 'events'), get_permalink() );
-			$permalink        = get_permalink();
+			$main_page          = __('All Entries', 'shwcp');
+			$settings_link      = __('Settings', 'shwcp');
+			$page_front         = __('Manage Front Page', 'shwcp');
+			$page_front_arg     = add_query_arg( array('wcp' => 'frontsort'), get_permalink() );
+			$man_ind            = __('Manage Individual Page', 'shwcp');
+			$man_ind_arg        = add_query_arg( array('wcp' => 'man-ind'), get_permalink() );
+			$page_fields        = __('Manage Fields', 'shwcp');
+			$page_fields_arg    = add_query_arg( array('wcp' => 'fields'), get_permalink() );
+			$page_entry         = __('Individual Entry', 'shwcp');
+			$page_entry_arg     = add_query_arg( array('wcp' => 'entry'), get_permalink() );
+			$page_export        = __('Import & Export', 'shwcp');
+			$page_export_arg    = add_query_arg( array('wcp' => 'ie'), get_permalink() );
+			$page_stats         = __('Statistics', 'shwcp');
+			$page_stats_arg     = add_query_arg( array('wcp' => 'stats'), get_permalink() );
+			$page_logging       = __('Logging', 'shwcp');
+			$page_logging_arg   = add_query_arg( array('wcp' => 'logging'), get_permalink() );
+			$page_events        = __('Events', 'shwcp');
+			$page_events_arg    = add_query_arg( array('wcp' => 'events'), get_permalink() );
+			$page_campaigns     = __( 'Kampaně', GLT_SLUG );
+			$page_campaigns_arg = add_query_arg( array('wcp' => 'campaigns'), get_permalink() );
+			$permalink          = get_permalink();
 
 			// Login Form and link variables
 			$login_nonce = wp_nonce_field( 'ajax-login-nonce', 'security', true, false);
@@ -612,12 +614,8 @@ EOC;
                     $wcp_ind_manage = new wcp_ind_manage();
                     $this->main_section = apply_filters('wcp_ind_manage_filter', $wcp_ind_manage->manage_individual());
 				} elseif ('entry' == $this->curr_page) { // Individual Lead page
-					//require_once(SHWCP_ROOT_PATH  . '/includes/class-wcp-individual.php');
-					//$wcp_individual = new wcp_individual();
-					//@#!/(our code)
 					include GLT_PATH . 'src/class-odwpglt-individual.php';
 					$wcp_individual = new odwpglt_individual();
-					//@#!/(our code)
 					$this->main_section = apply_filters('wcp_individual_filter', $wcp_individual->get_individual($db));
 					$lead_id = intval($_GET['entry']);
 					$bar_tools = $this->top_search($search_select);
@@ -650,6 +648,12 @@ EOC;
 								. '<i class="add-edit-event wcp-white wcp-sm md-add" title="' . __('Add New Event', 'shwcp')
 								. '"> </i></div>';
 					}
+				} elseif( 'campaigns' == $this->curr_page ) { // Campaigns
+					include GLT_PATH . 'src/class-odwpglt-campaigns.php';
+					$odwpglt_campaigns = new odwpglt_campaigns();
+					$this->main_section = $odwpglt_campaigns->get_all_campaigns();
+					$lead_id = intval($_GET['entry']);
+					$bar_tools = $this->top_search($search_select);
 				} else { // get the default view
 					$bar_tools = $this->top_search($search_select);
                     include GLT_PATH . 'src/class-odwpglt-allleads.php';
@@ -696,6 +700,8 @@ EOC;
 						$bread_single = $page_logging;
 					} elseif ($this->curr_page == 'events') {
 						$bread_single = $page_events;
+					} elseif( $this->curr_page == 'campaigns' ) {
+						$bread_single = $page_campaigns;
 					} else {
 						$bread_single = __('Unknown', 'shwcp');
 					}
