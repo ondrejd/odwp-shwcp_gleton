@@ -49,7 +49,7 @@ defined( 'GLT_PATH' ) || define( 'GLT_PATH', dirname( __FILE__ ) . '/' );
 defined( 'GLT_FILE' ) || define( 'GLT_FILE', __FILE__ );
 defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.1.0' );
 defined( 'GLT_TEMPLATE' ) || define( 'GLT_TEMPLATE', 'odwpglt-front-template.php' );
-defined( 'GLT_CPT' ) || define( 'GLT_CPT', 'odwpglt_campaign' );
+defined( 'GLT_CAMPAIGNS' ) || define( 'GLT_CAMPAIGNS', 'odwpglt_campaigns' );
 
 
 if( !function_exists( 'odwpglt_check_requirements' ) ) :
@@ -201,8 +201,22 @@ if( count( $odwpglt_errs ) > 0 ) {
     }
 } else {
     // Requirements are met so initialize the plugin...
-    // FIXED Přidat nový CPT "kampaň"
+    // TODO CPT změnit na normální tabulku v databází (tak jako je to v samotném SHWCP).
     // TODO Přidat na front-end admina do seznamu kontaktů ikonku s odkazem na seznam kampaní.
+
+	// Translations
+    if( !function_exists( 'odwpglt_load_textdomain' ) ) :
+        /**
+         * Load translations.
+         * @return void
+         * @since 0.1.0
+         */
+        function odwpglt_load_textdomain() {
+            $path = basename( dirname( __FILE__ ) ) . '/languages';
+            load_plugin_textdomain( GLT_SLUG, false, $path );
+        }
+    endif;
+    add_action( 'init', 'odwpglt_load_textdomain' );
 
     if( !function_exists( 'odwpglt_load_plugin_last' ) ) :
         /**
@@ -224,34 +238,41 @@ if( count( $odwpglt_errs ) > 0 ) {
     endif;
     add_action( 'activated_plugin', 'odwpglt_load_plugin_last' );
 
-    if( !function_exists( 'odwpglt_init_campaigns_cpt' ) ) :
+    if( !function_exists( 'odwpglt_setup' ) ) :
         /**
-         * Register our custom post type.
+         * Set up the default tables on plugin activation.
+         * @global wpdb $wpdb
          * @return void
          * @since 0.1.0
          */
-        function odwpglt_init_campaigns_cpt() {
-            register_post_type( GLT_CPT, array(
-                'labels' => array(
-                    'name' => __( 'Kampaně', GLT_SLUG ),
-                    'singular_name' => __( 'Kampaň', GLT_SLUG )
-                ),
-                'public' => false,
-                'has_archive' => false,
-                'exclude_from_search' => true,
-                'show_ui' => false,
-                'show_in_menu' => false,
-                'show_in_admin_bar' => false,
-                'hierarchical' => false,
-                'query_var' => false,
-                'can_export' => true,
-                'menu_position' => 50,
-                'menu_icon' => SHWCP_ROOT_URL . '/assets/img/wcp-16.png',
-                'supports' => array( 'title', 'author' ),
-            ) );
+        function odwpglt_setup( $network_wide ) {
+            odwpdl_write_log( '$network_wide="'.$network_wide.'"' );
+            include GLT_PATH . 'src/class-odwpglt-setup.php';
+
+            if( is_multisite() && $network_wide ) {
+                // multisite installation
+                global $wpdb;
+                foreach( $wpdb->get_col( "" ) as $blog_id ) {
+                    switch_to_blog( $blog_id );
+                    $odwpglt_setup = new odwpglt_setup();
+                    if( !$odwpglt_setup->table_exists() ) {
+                        $odwpglt_setup->install();
+                        $odwpglt_setup->install_data();
+                        $odwpglt_setup->install_options();
+                    }
+                }
+            } else {
+                // standard (no multisite) installation
+                $odwpglt_setup = new odwpglt_setup();
+                if( !$odwpglt_setup->table_exists() ) {
+                    $odwpglt_setup->install();
+                    $odwpglt_setup->install_data();
+                    $odwpglt_setup->install_options();
+                }
+            }
         }
     endif;
-    add_action( 'init', 'odwpglt_init_campaigns_cpt' );
+	register_activation_hook( __FILE__, 'odwpglt_setup');
 
     // Include all what is required
     include GLT_PATH . 'defines.php';

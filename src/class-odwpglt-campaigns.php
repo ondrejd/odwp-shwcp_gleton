@@ -39,10 +39,12 @@ if( !class_exists( 'odwpglt_campaigns' ) ) :
                 "
             );
 
+            
+
             if( !is_object( $this->lead ) || is_null( $this->lead ) ) {
-                //...
+                $msg = __( 'Nemohu zobrazit kampaně - <code>lead_id</code> nebylo stanoveno nebo je chybné!', GLT_SLUG );
                 $out = <<<EOC
-                <p> ... <b>Nemohu zobrazit kampaně - <code>lead_id</code> nebylo stanoveno!</b> ... </p>
+                <p><b>$msg</b></p>
 
 EOC;
             } else {
