@@ -75,6 +75,7 @@ if( !class_exists( 'odwpglt_setup' ) ) :
             $table_sql = <<<EOC
 CREATE TABLE $table_name (
     id bigint(20) NOT NULL AUTO_INCREMENT,
+    lead_id bigint(20) NOT NULL,
     tender bigint(20) DEFAULT 0 NOT NULL,
     type varchar(55) NOT NULL,
     status smallint(1) DEFAULT 0 NOT NULL,
