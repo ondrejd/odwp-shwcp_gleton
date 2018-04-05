@@ -3,7 +3,7 @@
  * Plugin Name: Customizations for WP Contacts plugin
  * Plugin URI: https://github.com/ondrejd/odwp-shwcp_gleton
  * Description: Plugin that changes behavior of <a href="http://wpcontacts.co/" target="blank">WP Contacts</a> plugin in way which one of my clients wanted.
- * Version: 0.1.0
+ * Version: 0.2.0
  * Author: Ondřej Doněk
  * Author URI: https://ondrejd.com/
  * License: GPLv3
@@ -47,7 +47,7 @@ defined( 'GLT_SLUG' ) || define( 'GLT_SLUG', 'odwpglt' );
 defined( 'GLT_NAME' ) || define( 'GLT_NAME', 'odwp-shwcp_gleton' );
 defined( 'GLT_PATH' ) || define( 'GLT_PATH', dirname( __FILE__ ) . '/' );
 defined( 'GLT_FILE' ) || define( 'GLT_FILE', __FILE__ );
-defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.1.0' );
+defined( 'GLT_VERSION' ) || define( 'GLT_VERSION', '0.2.0' );
 defined( 'GLT_TEMPLATE' ) || define( 'GLT_TEMPLATE', 'odwpglt-front-template.php' );
 defined( 'GLT_CAMPAIGNS' ) || define( 'GLT_CAMPAIGNS', 'odwpglt_campaigns' );
 
