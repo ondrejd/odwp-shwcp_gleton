@@ -76,12 +76,16 @@ if( !class_exists( 'odwpglt_setup' ) ) :
 CREATE TABLE $table_name (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     lead_id bigint(20) NOT NULL,
-    tender bigint(20) DEFAULT 0 NOT NULL,
+    tender bigint(20) NOT NULL DEFAULT 0,
     type varchar(55) NOT NULL,
-    status smallint(1) DEFAULT 0 NOT NULL,
-    substatus smallint(1) DEFAULT 0 NOT NULL,
+    status smallint(1) NOT NULL DEFAULT 1,
+    substatus smallint(1) NOT NULL DEFAULT 0,
     note longtext,
-    n_c_date date DEFAULT '0000-00-00' NOT NULL,
+    n_c_date date,
+    created datetime NOT NULL DEFAULT current_timestamp(),
+    author_id bigint(20) NOT NULL,
+    start_date date,
+    stop_date date,
     UNIQUE KEY id (id)
 ) $collate;
 EOC;

@@ -42,6 +42,13 @@ if( !class_exists( 'odwpglt_front' ) ) :
 			$wcp_ajax = new wcp_ajax();
 			add_action( 'wp_ajax_ajax-wcpfrontend', array( $wcp_ajax, 'myajax_wcpfrontend_callback' ) );
 			add_action( 'wp_ajax_nopriv_ajax-wcpfrontend', array( $wcp_ajax, 'nopriv_wcpfrontend_callback' ) );
+
+			// Frontend ajax (campaigns)
+			require_once( GLT_PATH . '/src/class-odwpglt-ajax.php' );
+			$odwpglt_ajax = new odwpglt_ajax();
+			add_action( 'wp_ajax_ajax-gltfrontend', array( $odwpglt_ajax, 'myajax_gltfrontend_callback' ) );
+			add_action( 'wp_ajax_nopriv_ajax-gltfrontend', array( $odwpglt_ajax, 'nopriv_wcpfrontend_callback' ) );
+
 			// Ajax Login
 			add_action( 'wp_ajax_nopriv_ajaxlogin', array( $wcp_ajax, 'ajax_login' ) );
 
@@ -410,33 +417,14 @@ if( !class_exists( 'odwpglt_front' ) ) :
             wp_register_script( 'odwpglt-front', plugins_url( '', GLT_FILE ) . '/assets/js/front.js', array( 'jquery' ), 'GLT_VERSION', true );
             wp_enqueue_script( 'odwpglt-front' );
             wp_localize_script( 'odwpglt-front', 'odwpglt', array(
+				// Localized strings
+				'confirmCampaignRemoval' => __( 'Potvrdit odstranění kampaně', GLT_SLUG ),
+				'cancelButton' => __( 'Zrušit', GLT_SLUG ),
+				'removeCampaignButton' => __( 'Odstranit kampaň', GLT_SLUG ),
+				'addCampaign' => __( 'Přidat novou kampaň', GLT_SLUG ),
+				'addCampaignButton' => __( 'Přidat kampaň', GLT_SLUG ),
 				// Statuses & substatuses
-				'statuses' => array(
-					1 => array(
-						'label' => __( 'neosloveno', GLT_FILE ),
-						'items' => array()
-					),
-					2 => array(
-						'label' => __( 'otevřeno', GLT_FILE ),
-						'items' => array(
-							'1' => __( 'nedovolal', GLT_FILE ),
-							'2' => __( 'zájem', GLT_FILE ),
-							'3' => __( 'váhá', GLT_FILE ),
-							'4' => __( 'email', GLT_FILE ),
-							'5' => __( 'v budoucnu', GLT_FILE ),
-							'6' => __( 'kalkulace', GLT_FILE ),
-							'7' => __( 'obchod', GLT_FILE ),
-						),
-					),
-					3 => array(
-						'label' => __( 'uzavřeno', GLT_FILE ),
-						'items' => array(
-							'1' => __( 'nezájem', GLT_FILE ),
-							'2' => __( 'smlouva', GLT_FILE ),
-							'3' => __( 'sekretářka', GLT_FILE ),
-						),
-					)
-				),
+				'statuses' => odwpglt_get_statuses_and_substatuses()
             ));
         }
 
@@ -564,7 +552,8 @@ if( !class_exists( 'odwpglt_front' ) ) :
 			$page_events        = __('Events', 'shwcp');
 			$page_events_arg    = add_query_arg( array('wcp' => 'events'), get_permalink() );
 			$page_campaigns     = __( 'Kampaně', GLT_SLUG );
-			$page_campaigns_arg = add_query_arg( array('wcp' => 'campaigns'), get_permalink() );
+			$page_campaign_add  = __( 'Kampaně &gt; Přidat kampaň', GLT_SLUG );
+			$page_campaign_edit = __( 'Kampaně &gt; Upravit kampaň', GLT_SLUG );
 			$permalink          = get_permalink();
 
 			// Login Form and link variables
@@ -652,8 +641,6 @@ EOC;
 					include GLT_PATH . 'src/class-odwpglt-campaigns.php';
 					$odwpglt_campaigns = new odwpglt_campaigns();
 					$this->main_section = $odwpglt_campaigns->get_all_campaigns();
-					$lead_id = intval($_GET['entry']);
-					$bar_tools = $this->top_search($search_select);
 				} else { // get the default view
 					$bar_tools = $this->top_search($search_select);
                     include GLT_PATH . 'src/class-odwpglt-allleads.php';

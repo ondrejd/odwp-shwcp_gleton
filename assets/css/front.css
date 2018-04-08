@@ -20,6 +20,11 @@ div.lead-count {
 .odwpglt-lead_campaigns { cursor: pointer; }
 .odwpglt-lead_campaigns i { color: #f30; }
 
+.odwpglt-campaigns-table-top_add_button { float: right; position: relative; top: 15px; right: 10px; }
+h4.odwpglt-campaigns-table-title { float: left; padding-left: 20px; }
+h4.odwpglt-campaigns-table-title em { font-weight: 400; }
+p.odwpglt-no-campaigns-msg { color: #666; padding: 20px 20px; }
+
 /*
  * Karty s informacemi o kontaktu ({@see class-odwpglt-individual.php}).
  */
@@ -55,6 +60,25 @@ div.lead-count {
             padding: 4px 7px;
             text-transform: none; }
 
+.odwpglt-campaign-status { color: #fff; padding: 1px 3px; border-radius: 2px; }
+.odwpglt-campaign-status-1 { background-color: #f30; border: 1px solid #f30; }
+.odwpglt-campaign-status-2 { background-color: #06a; border: 1px solid #06a; }
+.odwpglt-campaign-status-3 { background-color: #2a0; border: 1px solid #2a0; }
+
+.odwpglt-campaign-table-row { clear: both; }
+.odwpglt-campaign-table-cell-type { font-weight: 600; }
+.odwpglt-campaign-table-cell-edit > span {
+    display: block;
+    float: left;
+    margin: 0 10px;
+    width: 16px;
+    height: 16px;
+}
+.odwpglt-campaign-table-cell-edit .odwpglt-delete-all-check {
+    position: relative;
+    top: -5px;
+}
+
 .odwpglt-campaign {
     display: table;
     margin-left: 0;
@@ -88,3 +112,15 @@ div.lead-count {
     .odwpglt-campaign--sub .odwpglt-campaign--date { list-style: none; }
     .odwpglt-campaign--sub .odwpglt-campaign--date li { display: inline-block; padding: 0 5px; }
     .odwpglt-campaign--sub .odwpglt-campaign--date input[type="radio"] { height: 16px; }
+
+    .odwpglt-create-campaign, .odwpglt-delete-campaign { cursor: pointer; }
+    .odwpglt-campaign-no-tender {
+        color: #fff;
+        padding: 1px 3px;
+        border-radius: 2px;
+        background-color: #f30;
+        border: 1px solid #f30;
+    }
+
+    .odwpglt-campaigns-table a { color: #06a !important; }
+    .odwpglt-campaigns-table a:hover { text-decoration: underline; }

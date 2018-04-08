@@ -107,4 +107,112 @@ jQuery(document).ready(function() {
             jQuery( "." + cls_name ).hide();
         }
     });
+
+    /**
+     * Page with campaigns
+     */
+
+    // Create new campaign
+    jQuery( "span.odwpglt-add-campaign" ).click(function(e) {
+        console.log( e );
+        console.log( "TODO Add campaign..." );
+
+        var modalBody = "";
+
+        /*var leadID = 'new';
+        $.post(WCP_Ajax.ajaxurl, {
+            // wp ajax action
+            action: 'ajax-wcpfrontend',
+            // vars
+            lead_id: leadID,
+            new_lead: 'true',
+            nextNonce : WCP_Ajax.nextNonce,
+            postID : WCP_Ajax.postID
+        
+        }, function(response) {
+            if (response.logged_in == 'false') {
+                showLogInDiag(response.title, response.body, response.login_button, response.close);
+                return false;
+            }
+            showLeadDiag(response, leadID);
+        });*/
+/*
+- id	        bigint(20) Auto Increment	 
+- lead_id	    bigint(20)	 
++ tender	    bigint(20) [0]	 
++ type	        varchar(55)	 
+- status	    smallint(1) [1]	 
+- substatus	    smallint(1) [0]	 
+- note	    longtext NULL	 
+- n_c_date	date NULL	 
+- created	    datetime [current_timestamp()]	 
+- author_id	bigint(20)	 
++ start_date	date NULL	 
++ stop_date	date NULL
+*/
+        modalBody += '<div class="wcp-add-lead odwpglt-add-campaign row">'
+                   +   '<div class="col-md-12">'
+                   +     '<p style="color:#f30;font-weight:bold">XXX Finish this!</p>'
+                   +   '</div>'
+                   + '</div>';
+
+        // add large class to modal (remove for smaller ones)
+        jQuery( ".wcp-modal" ).find(".modal-dialog").addClass("modal-lg");
+        jQuery( ".wcp-modal" ).find(".modal-title").html(odwpglt.addCampaign);
+        jQuery( ".wcp-modal" ).find(".modal-body").html(modalBody);
+        var footer = '<button type="button" class="btn btn-default" data-dismiss="modal">'
+                    + odwpglt.cancelButton + '</button>'
+                    + '<button type="button" class="btn btn-primary confirm-add-campaign">' 
+                    + odwpglt.addCampaignButton + '</button>';
+        jQuery(".wcp-modal").find(".modal-footer").html(footer);
+        jQuery(".wcp-modal").modal();
+    });
+
+    // Delete campaign
+    jQuery( ".odwpglt-delete-campaign" ).click(function(e) {
+        var campaign_id = jQuery( this ).data( "campaign_id" );
+        var modalBody = "";
+        var headers = [];
+        var fields = [];
+
+        console.log( "TODO Delete campaign...", campaign_id );
+
+        jQuery( ".header-row" ).find("th").each(function() {
+            if(!jQuery( this ).hasClass("edit-header")) {
+                headers.push( jQuery( this ).text());
+            }
+        });
+
+        jQuery( ".odwpglt-campaigns-table" ).find("#odwpglt-campaign-table-row-" + campaign_id).find("td").each(function() {
+            if(!jQuery( this ).hasClass("odwpglt-campaign-table-cell-edit")) {
+                fields.push(jQuery(this).text());
+            }
+        });
+
+        console.log(headers, fields);
+
+        modalBody += '<div class="wcp-edit-lead odwpglt-edit-campaign row">';
+
+        var i = 0, total = headers.length;
+        jQuery( headers ).each(function(k, v) {
+            modalBody += '<div class="col-md-6">'
+                       + '<label for="del-' + k + '">' + v + '</label>'
+                       + '<span class="lead_field del-' + k + '">' + fields[i] + '</span>'
+                       + '</div>';
+            i++;
+        });
+
+        modalBody += '</div>';
+
+        // add large class to modal (remove for smaller ones)
+        jQuery( ".wcp-modal" ).find(".modal-dialog").addClass("modal-lg");
+        jQuery( ".wcp-modal" ).find(".modal-title").html(odwpglt.confirmCampaignRemoval);
+        jQuery( ".wcp-modal" ).find(".modal-body").html(modalBody);
+        var footer = '<button type="button" class="btn btn-default" data-dismiss="modal">'
+                    + odwpglt.cancelButton + '</button>'
+                    + '<button type="button" class="btn btn-primary confirm-delete-campaign odwpglt-campaign-' + campaign_id + '">' 
+                    + odwpglt.removeCampaignButton + '</button>';
+        jQuery(".wcp-modal").find(".modal-footer").html(footer);
+        jQuery(".wcp-modal").modal();
+    });
 });

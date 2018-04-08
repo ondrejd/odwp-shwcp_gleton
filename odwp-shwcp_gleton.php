@@ -201,8 +201,12 @@ if( count( $odwpglt_errs ) > 0 ) {
     }
 } else {
     // Requirements are met so initialize the plugin...
-    // TODO CPT změnit na normální tabulku v databází (tak jako je to v samotném SHWCP).
-    // TODO Přidat na front-end admina do seznamu kontaktů ikonku s odkazem na seznam kampaní.
+    // FIXED CPT změnit na normální tabulku v databází (tak jako je to v samotném SHWCP).
+    // FIXED Přidat na front-end admina do seznamu kontaktů ikonku s odkazem na seznam kampaní.
+    // FIXED Zobrazit tabulku s kampaněmi pro vybraný kontakt.
+    // TODO Dokončit popup pro přidání/editaci nové kampaně.
+    // TODO Přidat naše Ajax akce (přidání, editace, smazání kampaně adminem).
+    // TODO Zobrazení pro obchodní manažery (jen karty dle kampaní).
 
 	// Translations
     if( !function_exists( 'odwpglt_load_textdomain' ) ) :
@@ -272,7 +276,7 @@ if( count( $odwpglt_errs ) > 0 ) {
             }
         }
     endif;
-	register_activation_hook( __FILE__, 'odwpglt_setup');
+    register_activation_hook( __FILE__, 'odwpglt_setup');
 
     // Include all what is required
     include GLT_PATH . 'defines.php';

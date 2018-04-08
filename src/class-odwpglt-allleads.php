@@ -899,7 +899,7 @@ EOC;
             }
             if ($this->can_edit) { // user can edit leads
                 $campaigns_link_lbl = __( 'Upravit kampaně kontaktu', GLT_SLUG );
-                $campaigns_link = add_query_arg( array( 'wcp' => 'campaigns', lead => $lead['wcp_lead_id'] ), get_permalink() );
+                $campaigns_link = add_query_arg( array( 'wcp' => 'campaigns', 'lead' => $lead['wcp_lead_id'] ), get_permalink() );
                 $wcp_main .= <<<EOC
 
                                 <td class='edit-td'>
